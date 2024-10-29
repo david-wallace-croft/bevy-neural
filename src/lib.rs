@@ -1,10 +1,9 @@
-#![expect(dead_code)]
-
 use self::component::acceleration::AccelerationComponent;
 use self::component::position::PositionComponent;
 use self::component::velocity::VelocityComponent;
 use self::system::position_updater::update_position_system;
 use self::system::velocity_updater::update_velocity_system;
+use ::bevy::ecs::schedule::SystemConfigs;
 use ::bevy::ecs::system::EntityCommands;
 use ::bevy::prelude::*;
 
@@ -18,7 +17,8 @@ pub fn launch() {
 
   let _app: &mut App = app.add_systems(Startup, startup_systems);
 
-  let update_systems = (update_velocity_system, update_position_system);
+  let update_systems: SystemConfigs =
+    (update_velocity_system, update_position_system).chain();
 
   let _app: &mut App = app.add_systems(Update, update_systems);
 
