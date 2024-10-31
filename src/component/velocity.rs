@@ -1,8 +1,5 @@
-use bevy::prelude::Component;
+use ::bevy::math::DVec3;
+use ::bevy::prelude::*;
 
 #[derive(Component, Default)]
-pub struct VelocityComponent {
-  pub x: f64,
-  pub y: f64,
-  pub z: f64,
-}
+pub struct VelocityComponent(pub DVec3);

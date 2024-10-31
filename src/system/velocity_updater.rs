@@ -4,15 +4,11 @@ use ::bevy::prelude::*;
 
 pub fn update_velocity_system(
   mut query: Query<(&AccelerationComponent, &mut VelocityComponent)>,
-  time: Res<Time>
+  time: Res<Time>,
 ) {
   let delta_seconds: f64 = time.delta_seconds() as f64;
-  
+
   for (acceleration, mut velocity) in query.iter_mut() {
-    velocity.x += acceleration.x * delta_seconds;
-    
-    velocity.y += acceleration.y * delta_seconds;
-    
-    velocity.z += acceleration.z * delta_seconds;
+    velocity.0 += acceleration.0 * delta_seconds;
   }
 }
