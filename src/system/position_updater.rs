@@ -9,6 +9,6 @@ pub fn update_position_system(
   let delta_seconds: f64 = time.delta_seconds() as f64;
 
   for (mut position, velocity) in query.iter_mut() {
-    position.0 += velocity.0 * delta_seconds;
+    position.value += velocity.value * delta_seconds;
   }
 }

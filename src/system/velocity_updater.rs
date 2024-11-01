@@ -9,6 +9,6 @@ pub fn update_velocity_system(
   let delta_seconds: f64 = time.delta_seconds() as f64;
 
   for (acceleration, mut velocity) in query.iter_mut() {
-    velocity.0 += acceleration.0 * delta_seconds;
+    velocity.value += acceleration.value * delta_seconds;
   }
 }
