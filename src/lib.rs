@@ -7,7 +7,6 @@ use self::system::velocity_updater::update_velocity_system;
 use ::bevy::ecs::schedule::SystemConfigs;
 use ::bevy::ecs::system::EntityCommands;
 use ::bevy::prelude::*;
-use ::bevy::time::TimePlugin;
 
 mod component;
 mod system;
@@ -15,7 +14,7 @@ mod system;
 pub fn launch() {
   let mut app = App::new();
 
-  let _app: &mut App = app.add_plugins(TimePlugin);
+  let _app: &mut App = app.add_plugins(DefaultPlugins);
 
   let startup_systems = spawn_entity;
 
