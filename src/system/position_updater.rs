@@ -6,7 +6,7 @@ pub fn update_position_system(
   mut query: Query<(&mut PositionComponent, &VelocityComponent)>,
   time: Res<Time>,
 ) {
-  let delta_seconds: f64 = time.delta_seconds() as f64;
+  let delta_seconds: f64 = time.delta_secs() as f64;
 
   for (mut position, velocity) in query.iter_mut() {
     position.value += velocity.value * delta_seconds;

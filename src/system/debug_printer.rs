@@ -13,7 +13,7 @@ pub fn debug_printer_system(
 ) {
   let (acceleration, position, velocity) = query.single();
 
-  let delta_seconds: f64 = time.delta_seconds() as f64;
+  let delta_seconds: f64 = time.delta_secs() as f64;
 
   println!(
     "{} {} {} {}",
