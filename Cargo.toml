@@ -15,7 +15,7 @@ repository = "https://github.com/david-wallace-croft/bevy-neural"
 version = "0.0.0-SNAPSHOT"
 
 [dependencies]
-bevy = "0.15.0-rc.1"
+bevy = "0.15.0-rc.2"
 
 # Enable a small amount of optimization in the dev profile.
 [profile.dev]
