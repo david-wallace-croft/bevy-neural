@@ -1,3 +1,5 @@
+#![expect(dead_code)]
+
 use self::component::acceleration::AccelerationComponent;
 use self::component::position::PositionComponent;
 use self::component::velocity::VelocityComponent;
@@ -33,7 +35,7 @@ pub fn launch() {
 }
 
 fn spawn_entity(mut commands: Commands) {
-  let acceleration_component = AccelerationComponent::default();
+  let acceleration_component = AccelerationComponent::new(1., 1., 1.);
 
   let position_component = PositionComponent::default();
 

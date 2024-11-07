@@ -15,6 +15,8 @@ pub fn debug_printer_system(
 
   let delta_seconds: f64 = time.delta_secs() as f64;
 
+  // TODO: print fixed number of digits
+
   println!(
     "{} {} {} {}",
     delta_seconds, acceleration.value, velocity.value, position.value

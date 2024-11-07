@@ -5,3 +5,17 @@ use ::bevy::prelude::*;
 pub struct VelocityComponent {
   pub value: DVec3,
 }
+
+impl VelocityComponent {
+  pub fn new(
+    x: f64,
+    y: f64,
+    z: f64,
+  ) -> Self {
+    let value = DVec3::new(x, y, z);
+
+    Self {
+      value,
+    }
+  }
+}

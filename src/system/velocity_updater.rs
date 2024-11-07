@@ -6,9 +6,9 @@ pub fn update_velocity_system(
   mut query: Query<(&AccelerationComponent, &mut VelocityComponent)>,
   time: Res<Time>,
 ) {
-  let delta_seconds: f64 = time.delta_secs() as f64;
+  let delta_sec_f64: f64 = time.delta_secs_f64();
 
   for (acceleration, mut velocity) in query.iter_mut() {
-    velocity.value += acceleration.value * delta_seconds;
+    velocity.value += acceleration.value * delta_sec_f64;
   }
 }
