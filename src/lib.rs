@@ -35,7 +35,7 @@ pub fn launch() {
 }
 
 fn spawn_entity(mut commands: Commands) {
-  let acceleration_component = AccelerationComponent::new(1., 1., 1.);
+  let acceleration_component = AccelerationComponent::new(1e-6, 1e-6, 1e-6);
 
   let position_component = PositionComponent::default();
 

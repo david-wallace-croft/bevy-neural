@@ -18,7 +18,7 @@ pub fn debug_printer_system(
   // TODO: print fixed number of digits
 
   println!(
-    "{} {} {} {}",
+    "{:.6} {:.6} {:.6} {:.6}",
     delta_seconds, acceleration.value, velocity.value, position.value
   );
 }
