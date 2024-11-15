@@ -16,7 +16,7 @@ rust-version = "1.82.0"
 version = "0.0.0-SNAPSHOT"
 
 [dependencies]
-bevy = "0.15.0-rc.2"
+bevy = "0.15.0-rc.3"
 
 # Enable a small amount of optimization in the dev profile.
 [profile.dev]
