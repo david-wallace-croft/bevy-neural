@@ -31,6 +31,17 @@ pub fn launch() {
 
   let _app: &mut App = app.add_systems(Update, update_systems);
 
+  let clear_color = ClearColor(Color::srgb(0.1, 0., 0.15));
+
+  let _app: &mut App = app.insert_resource(clear_color);
+
+  let ambient_light = AmbientLight {
+    color: Default::default(),
+    brightness: 1_000.,
+  };
+
+  let _app: &mut App = app.insert_resource(ambient_light);
+
   let _app_exit: AppExit = app.run();
 }
 
