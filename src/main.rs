@@ -1,3 +1,5 @@
+use bevy_neural::launcher::Launcher;
+
 fn main() {
-  bevy_neural::launch();
+  Launcher::launch();
 }
