@@ -2,6 +2,7 @@ use super::component::acceleration::AccelerationComponent;
 use super::component::position::PositionComponent;
 use super::component::velocity::VelocityComponent;
 use super::entity::ball::BallEntity;
+use super::resource::debug_timer::DebugTimer;
 use super::system::debug_printer::debug_printer_system;
 use super::system::position_updater::update_position_system;
 use super::system::velocity_updater::update_velocity_system;
@@ -63,6 +64,12 @@ impl Launcher {
     };
 
     let _app: &mut App = self.app.insert_resource(ambient_light);
+
+    let timer = Timer::from_seconds(1., TimerMode::Repeating);
+
+    let debug_timer = DebugTimer(timer);
+
+    let _app: &mut App = self.app.insert_resource(debug_timer);
 
     self
   }
