@@ -1,9 +1,10 @@
-use crate::component::acceleration::AccelerationComponent;
-use crate::component::position::PositionComponent;
-use crate::component::velocity::VelocityComponent;
-use crate::system::debug_printer::debug_printer_system;
-use crate::system::position_updater::update_position_system;
-use crate::system::velocity_updater::update_velocity_system;
+use super::component::acceleration::AccelerationComponent;
+use super::component::position::PositionComponent;
+use super::component::velocity::VelocityComponent;
+use super::entity::ball::BallEntity;
+use super::system::debug_printer::debug_printer_system;
+use super::system::position_updater::update_position_system;
+use super::system::velocity_updater::update_velocity_system;
 use bevy::ecs::schedule::SystemConfigs;
 use bevy::prelude::*;
 
@@ -71,6 +72,8 @@ impl Launcher {
   }
 
   fn spawn_entity(mut commands: Commands) {
+    let ball_entity = BallEntity::new(0);
+
     let acceleration_component = AccelerationComponent::new(1e-6, 1e-6, 1e-6);
 
     let position_component = PositionComponent::default();
@@ -78,6 +81,7 @@ impl Launcher {
     let velocity_component = VelocityComponent::default();
 
     let component_bundle = (
+      ball_entity,
       acceleration_component,
       position_component,
       velocity_component,

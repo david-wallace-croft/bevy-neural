@@ -1,5 +1,5 @@
 use ::bevy::math::DVec3;
-use ::bevy::prelude::Component;
+use ::bevy::prelude::*;
 
 #[derive(Component, Default)]
 pub struct AccelerationComponent {
