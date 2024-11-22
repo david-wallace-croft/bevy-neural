@@ -94,6 +94,10 @@ impl Launcher {
       velocity_component,
     );
 
-    let _entity_commands: EntityCommands = commands.spawn(component_bundle);
+    let entity_commands: EntityCommands = commands.spawn(component_bundle);
+
+    let _entity: Entity = entity_commands.id();
+
+    // TODO: Add Entity to a Vec and then set that as a Resource
   }
 }
