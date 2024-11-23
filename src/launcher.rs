@@ -6,8 +6,13 @@ use super::resource::debug_timer::DebugTimer;
 use super::system::debug_printer::debug_printer_system;
 use super::system::position_updater::update_position_system;
 use super::system::velocity_updater::update_velocity_system;
+use bevy::app::PluginGroupBuilder;
+use bevy::asset::RenderAssetUsages;
 use bevy::ecs::schedule::SystemConfigs;
 use bevy::prelude::*;
+use bevy::render::render_resource::{
+  Extent3d, TextureDimension, TextureFormat,
+};
 
 #[derive(Default)]
 pub struct Launcher {
@@ -27,13 +32,22 @@ impl Launcher {
   // private functions
 
   fn add_plugins(mut self) -> Self {
-    self.app.add_plugins(DefaultPlugins);
+    let image_plugin = ImagePlugin::default_nearest();
+
+    let plugin_group_builder: PluginGroupBuilder =
+      DefaultPlugins.set(image_plugin);
+
+    self.app.add_plugins(plugin_group_builder);
 
     self
   }
 
   fn add_startup_systems(mut self) -> Self {
-    let startup_systems = Launcher::spawn_entity;
+    let startup_systems = (
+      Launcher::spawn_camera,
+      Launcher::spawn_cubes,
+      Launcher::spawn_entity,
+    );
 
     self.app.add_systems(Startup, startup_systems);
 
@@ -78,6 +92,63 @@ impl Launcher {
     self.app.run()
   }
 
+  fn spawn_camera(mut commands: Commands) {
+    let target = Vec3::new(0., 1., 0.);
+
+    let transform =
+      Transform::from_xyz(0., 7., 14.).looking_at(target, Vec3::Y);
+
+    let camera_3d_bundle = Camera3dBundle {
+      transform,
+      ..default()
+    };
+
+    commands.spawn(camera_3d_bundle);
+  }
+
+  fn spawn_cubes(
+    mut commands: Commands,
+    mut image_assets: ResMut<Assets<Image>>,
+    mut mesh_assets: ResMut<Assets<Mesh>>,
+    mut standard_material_assets: ResMut<Assets<StandardMaterial>>,
+  ) {
+    let asset = Cuboid::new(1., 1., 1.);
+
+    let image: Image = uv_debug_texture();
+
+    let image_handle: Handle<Image> = image_assets.add(image);
+
+    let base_color_texture = Some(image_handle);
+
+    let standard_material = StandardMaterial {
+      base_color_texture,
+      ..default()
+    };
+
+    let debug_material = standard_material_assets.add(standard_material);
+
+    let mesh: Handle<Mesh> = mesh_assets.add(asset);
+
+    // https://youtu.be/IHRI01Oqj60?si=8VFt_g1qYgw2vokQ
+    for x in -10..10 {
+      for z in -10..10 {
+        let mesh_clone: Handle<Mesh> = mesh.clone();
+
+        let translation = Vec3::new((2 * x) as f32, 0., (2 * z) as f32);
+
+        let transform = Transform::from_translation(translation);
+
+        let pbr_bundle = PbrBundle {
+          mesh: Mesh3d::from(mesh_clone),
+          transform,
+          ..Default::default()
+        };
+
+        commands.spawn((pbr_bundle, Shape));
+      }
+    }
+  }
+
   fn spawn_entity(mut commands: Commands) {
     let ball_entity = BallEntity::new(0);
 
@@ -101,3 +172,39 @@ impl Launcher {
     // TODO: Add Entity to a Vec and then set that as a Resource
   }
 }
+
+// https://bevyengine.org/examples/3d-rendering/3d-shapes/
+fn uv_debug_texture() -> Image {
+  const TEXTURE_SIZE: usize = 8;
+
+  let mut palette: [u8; 32] = [
+    255, 102, 159, 255, 255, 159, 102, 255, 236, 255, 102, 255, 121, 255, 102,
+    255, 102, 255, 198, 255, 102, 198, 255, 255, 121, 102, 255, 255, 236, 102,
+    255, 255,
+  ];
+
+  let mut texture_data = [0; TEXTURE_SIZE * TEXTURE_SIZE * 4];
+
+  for y in 0..TEXTURE_SIZE {
+    let offset = TEXTURE_SIZE * y * 4;
+
+    texture_data[offset..(offset + TEXTURE_SIZE * 4)].copy_from_slice(&palette);
+
+    palette.rotate_right(4);
+  }
+
+  Image::new_fill(
+    Extent3d {
+      width: TEXTURE_SIZE as u32,
+      height: TEXTURE_SIZE as u32,
+      depth_or_array_layers: 1,
+    },
+    TextureDimension::D2,
+    &texture_data,
+    TextureFormat::Rgba8UnormSrgb,
+    RenderAssetUsages::RENDER_WORLD,
+  )
+}
+
+#[derive(Component)]
+pub struct Shape;
