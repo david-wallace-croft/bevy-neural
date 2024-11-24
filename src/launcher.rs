@@ -132,14 +132,22 @@ impl Launcher {
     // https://youtu.be/IHRI01Oqj60?si=8VFt_g1qYgw2vokQ
     for x in -10..10 {
       for z in -10..10 {
+        let debug_material_clone = debug_material.clone();
+
+        let material: MeshMaterial3d<StandardMaterial> =
+          MeshMaterial3d::from(debug_material_clone);
+
         let mesh_clone: Handle<Mesh> = mesh.clone();
+
+        let mesh: Mesh3d = Mesh3d::from(mesh_clone);
 
         let translation = Vec3::new((2 * x) as f32, 0., (2 * z) as f32);
 
         let transform = Transform::from_translation(translation);
 
         let pbr_bundle = PbrBundle {
-          mesh: Mesh3d::from(mesh_clone),
+          material,
+          mesh,
           transform,
           ..Default::default()
         };
