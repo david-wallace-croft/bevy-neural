@@ -44,7 +44,7 @@ impl Launcher {
 
   fn add_startup_systems(mut self) -> Self {
     let startup_systems = (
-      Launcher::spawn_ball,
+      Launcher::spawn_balls,
       Launcher::spawn_camera,
       // Launcher::spawn_cubes,
     );
@@ -92,18 +92,12 @@ impl Launcher {
     self.app.run()
   }
 
-  fn spawn_ball(
+  fn spawn_balls(
     mut commands: Commands,
     mut image_assets: ResMut<Assets<Image>>,
     mut mesh_assets: ResMut<Assets<Mesh>>,
     mut standard_material_assets: ResMut<Assets<StandardMaterial>>,
   ) {
-    let acceleration_component = AccelerationComponent::new(1e-6, 1e-6, 1e-6);
-
-    let position_component = PositionComponent::default();
-
-    let velocity_component = VelocityComponent::default();
-
     let image: Image = uv_debug_texture();
 
     // TODO: Figure out how to get an already created image
@@ -119,44 +113,52 @@ impl Launcher {
     // TODO: Figure out how to get an already created material
     let debug_material = standard_material_assets.add(standard_material);
 
-    let asset = Sphere::default();
+    for index in 0..6 {
+      let acceleration_component = AccelerationComponent::new(1e-6, 1e-6, 1e-6);
 
-    // TODO: Figure out how to get an already created mesh
-    let mesh: Handle<Mesh> = mesh_assets.add(asset);
+      let position_component = PositionComponent::default();
 
-    let debug_material_clone = debug_material.clone();
+      let velocity_component = VelocityComponent::default();
 
-    let material: MeshMaterial3d<StandardMaterial> =
-      MeshMaterial3d::from(debug_material_clone);
+      let asset = Sphere::default();
 
-    let mesh_clone: Handle<Mesh> = mesh.clone();
+      // TODO: Figure out how to get an already created mesh
+      let mesh: Handle<Mesh> = mesh_assets.add(asset);
 
-    let mesh: Mesh3d = Mesh3d::from(mesh_clone);
+      let debug_material_clone = debug_material.clone();
 
-    let translation = Vec3::new(0., 0., 0.);
+      let material: MeshMaterial3d<StandardMaterial> =
+        MeshMaterial3d::from(debug_material_clone);
 
-    let transform = Transform::from_translation(translation);
+      let mesh_clone: Handle<Mesh> = mesh.clone();
 
-    let pbr_bundle = PbrBundle {
-      material,
-      mesh,
-      transform,
-      ..Default::default()
-    };
+      let mesh: Mesh3d = Mesh3d::from(mesh_clone);
 
-    let component_bundle = (
-      BallEntity::new(0),
-      acceleration_component,
-      pbr_bundle,
-      position_component,
-      velocity_component,
-    );
+      let translation = Vec3::new(index as f32, index as f32, index as f32);
 
-    let entity_commands: EntityCommands = commands.spawn(component_bundle);
+      let transform = Transform::from_translation(translation);
 
-    let _entity: Entity = entity_commands.id();
+      let pbr_bundle = PbrBundle {
+        material,
+        mesh,
+        transform,
+        ..Default::default()
+      };
 
-    // TODO: Add Entity to a Vec and then set that as a Resource
+      let component_bundle = (
+        BallEntity::new(0),
+        acceleration_component,
+        pbr_bundle,
+        position_component,
+        velocity_component,
+      );
+
+      let entity_commands: EntityCommands = commands.spawn(component_bundle);
+
+      let _entity: Entity = entity_commands.id();
+
+      // TODO: Add Entity to a Vec and then set that as a Resource
+    }
   }
 
   fn spawn_camera(mut commands: Commands) {
