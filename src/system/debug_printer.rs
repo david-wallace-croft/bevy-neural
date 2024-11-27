@@ -24,14 +24,16 @@ pub fn debug_printer_system(
     return;
   }
 
-  let (ball, acceleration, position, velocity) = query.single();
+  for (ball, acceleration, position, velocity) in query.iter() {
+    let delta_seconds: f64 = time.delta_secs_f64();
 
-  let delta_seconds: f64 = time.delta_secs_f64();
-
-  // TODO: print fixed number of digits
-
-  println!(
-    "{} {:.6} {:.6} {:.6} {:.6}",
-    ball.id, delta_seconds, acceleration.value, velocity.value, position.value
-  );
+    println!(
+      "{} {:.6} {:.6} {:.6} {:.6}",
+      ball.id,
+      delta_seconds,
+      acceleration.value,
+      velocity.value,
+      position.value
+    );
+  }
 }

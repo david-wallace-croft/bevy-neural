@@ -146,7 +146,7 @@ impl Launcher {
       };
 
       let component_bundle = (
-        BallEntity::new(0),
+        BallEntity::new(index),
         acceleration_component,
         pbr_bundle,
         position_component,
