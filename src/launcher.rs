@@ -3,6 +3,7 @@ use super::component::position::PositionComponent;
 use super::component::velocity::VelocityComponent;
 use super::entity::ball::BallEntity;
 use super::resource::debug_timer::DebugTimer;
+use super::system::ball_updater::update_ball_system;
 use super::system::debug_printer::debug_printer_system;
 use super::system::position_updater::update_position_system;
 use super::system::velocity_updater::update_velocity_system;
@@ -58,6 +59,7 @@ impl Launcher {
     let update_systems: SystemConfigs = (
       update_velocity_system,
       update_position_system,
+      update_ball_system,
       debug_printer_system,
     )
       .chain();
@@ -114,9 +116,10 @@ impl Launcher {
     let debug_material = standard_material_assets.add(standard_material);
 
     for index in 0..6 {
-      let acceleration_component = AccelerationComponent::new(1e-6, 1e-6, 1e-6);
+      let acceleration_component = AccelerationComponent::new(1e-1, 1e-1, 1e-1);
 
-      let position_component = PositionComponent::default();
+      let position_component =
+        PositionComponent::new(index as f32, index as f32, index as f32);
 
       let velocity_component = VelocityComponent::default();
 
@@ -138,6 +141,7 @@ impl Launcher {
 
       let transform = Transform::from_translation(translation);
 
+      // TODO: update deprecated
       let pbr_bundle = PbrBundle {
         material,
         mesh,

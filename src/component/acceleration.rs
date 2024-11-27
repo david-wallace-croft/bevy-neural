@@ -1,18 +1,17 @@
-use ::bevy::math::DVec3;
 use ::bevy::prelude::*;
 
 #[derive(Component, Default)]
 pub struct AccelerationComponent {
-  pub value: DVec3,
+  pub value: Vec3,
 }
 
 impl AccelerationComponent {
   pub fn new(
-    x: f64,
-    y: f64,
-    z: f64,
+    x: f32,
+    y: f32,
+    z: f32,
   ) -> Self {
-    let value = DVec3::new(x, y, z);
+    let value = Vec3::new(x, y, z);
 
     Self {
       value,
