@@ -116,7 +116,7 @@ impl Launcher {
     let debug_material = standard_material_assets.add(standard_material);
 
     for index in 0..6 {
-      let acceleration_component = AccelerationComponent::new(1e-1, 1e-1, 1e-1);
+      let acceleration_component = AccelerationComponent::new(1e-2, 1e-2, 1e-2);
 
       let position_component =
         PositionComponent::new(index as f32, index as f32, index as f32);
