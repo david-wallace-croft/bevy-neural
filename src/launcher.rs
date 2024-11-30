@@ -4,6 +4,7 @@ use super::component::velocity::VelocityComponent;
 use super::entity::ball::BallEntity;
 use super::resource::debug_timer::DebugTimer;
 use super::system::ball_updater::update_ball_system;
+// use super::system::camera_mover::camera_mover_system;
 use super::system::debug_printer::debug_printer_system;
 use super::system::position_updater::update_position_system;
 use super::system::velocity_updater::update_velocity_system;
@@ -57,6 +58,7 @@ impl Launcher {
 
   fn add_update_systems(mut self) -> Self {
     let update_systems: SystemConfigs = (
+      // TODO: camera_mover_system,
       update_velocity_system,
       update_position_system,
       update_ball_system,
