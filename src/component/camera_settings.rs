@@ -2,7 +2,7 @@ use bevy::prelude::*;
 
 // https://www.youtube.com/watch?v=dD5-M-vUmls
 #[derive(Component)]
-pub struct CameraSettings {
+pub struct CameraSettingsComponent {
   pub back: KeyCode,
   pub boost: KeyCode,
   pub boost_factor: f32,
@@ -16,7 +16,7 @@ pub struct CameraSettings {
   pub up: KeyCode,
 }
 
-impl Default for CameraSettings {
+impl Default for CameraSettingsComponent {
   fn default() -> Self {
     Self {
       back: KeyCode::KeyS,

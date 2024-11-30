@@ -116,6 +116,8 @@ impl Launcher {
     let debug_material = standard_material_assets.add(standard_material);
 
     for index in 0..6 {
+      // TODO: generate random values
+
       let acceleration_component = AccelerationComponent::new(1e-2, 1e-2, 1e-2);
 
       let position_component =
