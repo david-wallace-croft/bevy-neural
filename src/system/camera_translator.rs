@@ -13,19 +13,19 @@ pub fn camera_translator_system(
 ) {
   for (camera_settings, mut transform) in &mut query {
     let mut delta = Vec3::ZERO;
-    
+
     if button_input.pressed(camera_settings.forward) {
       delta.z += 1.;
     }
-    
+
     if button_input.pressed(camera_settings.back) {
       delta.z -= 1.;
     }
-    
+
     if button_input.pressed(camera_settings.left) {
       delta.x -= 1.;
     }
-    
+
     if button_input.pressed(camera_settings.right) {
       delta.x += 1.;
     }
