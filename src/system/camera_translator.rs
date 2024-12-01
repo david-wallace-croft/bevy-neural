@@ -3,7 +3,7 @@ use super::super::component::fly_camera::FlyCameraComponent;
 use bevy::prelude::*;
 
 // https://www.youtube.com/watch?v=dD5-M-vUmls
-pub fn camera_mover_system(
+pub fn camera_translator_system(
   mut query: Query<
     (&CameraSettingsComponent, &mut Transform),
     With<FlyCameraComponent>,
