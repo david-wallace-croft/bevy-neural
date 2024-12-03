@@ -1,7 +1,7 @@
 use super::super::component::camera_settings::CameraSettingsComponent;
 use super::super::system::cursor::cursor_grab_system;
-use crate::system::camera_rotator::camera_rotator_system;
-use crate::system::camera_translator::camera_translator_system;
+use crate::system::camera::camera_rotator_system;
+use crate::system::camera::camera_translator_system;
 use crate::system::cursor::cursor_toggle_system;
 use ::bevy::prelude::*;
 
@@ -21,6 +21,7 @@ impl Plugin for FlyCameraComponent {
       .add_systems(Update, cursor_toggle_system)
       .add_systems(
         Update,
+        // TODO: Are these in the right order?
         (camera_rotator_system, camera_translator_system).chain(),
       );
   }
