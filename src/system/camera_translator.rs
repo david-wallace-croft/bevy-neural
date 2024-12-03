@@ -1,6 +1,6 @@
 use super::super::component::camera_settings::CameraSettingsComponent;
 use super::super::component::fly_camera::FlyCameraComponent;
-use bevy::prelude::*;
+use ::bevy::prelude::*;
 
 // https://www.youtube.com/watch?v=dD5-M-vUmls
 pub fn camera_translator_system(
