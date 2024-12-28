@@ -32,7 +32,7 @@ pub fn cursor_toggle_system(
   camera_settings_query: Query<&CameraSettingsComponent>,
   mut window_query: Query<&mut Window, With<PrimaryWindow>>,
 ) {
-  let Ok(mut window) = window_query.get_single_mut() else {
+  let Ok(window) = window_query.get_single_mut() else {
     return;
   };
 
