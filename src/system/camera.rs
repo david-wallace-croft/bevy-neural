@@ -15,7 +15,7 @@ pub fn camera_rotator_system(
   >,
   window_query: Query<&Window, With<PrimaryWindow>>,
 ) {
-  let delta: Vec2 = event_reader.read().map(|v| v.delta).sum();
+  let delta: Vec2 = event_reader.read().map(|v: &MouseMotion| v.delta).sum();
 
   let Ok(window) = window_query.get_single() else {
     return;
@@ -28,7 +28,7 @@ pub fn camera_rotator_system(
   for (camera_settings, mut transform) in &mut transform_query {
     let (mut yaw, mut pitch, _) = transform.rotation.to_euler(EulerRot::YXZ);
 
-    let window_scale = window.height().min(window.width());
+    let window_scale: f32 = window.height().min(window.width());
 
     pitch -=
       (camera_settings.mouse_sensitivity * delta.y * window_scale).to_radians();
@@ -70,13 +70,13 @@ pub fn camera_translator_system(
       delta.x += 1.;
     }
 
-    let mut forward = transform.forward().as_vec3();
+    let mut forward: Vec3 = transform.forward().as_vec3();
 
     forward.y = 0.;
 
     forward = forward.normalize();
 
-    let mut right = transform.right().as_vec3();
+    let mut right: Vec3 = transform.right().as_vec3();
 
     right.y = 0.;
 

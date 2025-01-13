@@ -107,7 +107,7 @@ impl Launcher {
     // TODO: Figure out how to get an already created image
     let image_handle: Handle<Image> = image_assets.add(image);
 
-    let base_color_texture = Some(image_handle);
+    let base_color_texture: Option<Handle<Image>> = Some(image_handle);
 
     let standard_material = StandardMaterial {
       base_color_texture,
@@ -115,7 +115,8 @@ impl Launcher {
     };
 
     // TODO: Figure out how to get an already created material
-    let debug_material = standard_material_assets.add(standard_material);
+    let debug_material: Handle<StandardMaterial> =
+      standard_material_assets.add(standard_material);
 
     for index in 0..6 {
       // TODO: generate random values
@@ -132,7 +133,8 @@ impl Launcher {
       // TODO: Figure out how to get an already created mesh
       let mesh: Handle<Mesh> = mesh_assets.add(asset);
 
-      let debug_material_clone = debug_material.clone();
+      let debug_material_clone: Handle<StandardMaterial> =
+        debug_material.clone();
 
       let material: MeshMaterial3d<StandardMaterial> =
         MeshMaterial3d::from(debug_material_clone);
@@ -146,14 +148,20 @@ impl Launcher {
       let transform = Transform::from_translation(translation);
 
       // TODO: update deprecated
-      let pbr_bundle = PbrBundle {
+      let pbr_bundle: MaterialMeshBundle<StandardMaterial> = PbrBundle {
         material,
         mesh,
         transform,
         ..Default::default()
       };
 
-      let component_bundle = (
+      let component_bundle: (
+        BallEntity,
+        AccelerationComponent,
+        MaterialMeshBundle<StandardMaterial>,
+        PositionComponent,
+        VelocityComponent,
+      ) = (
         BallEntity::new(index),
         acceleration_component,
         pbr_bundle,
@@ -195,21 +203,23 @@ impl Launcher {
 
     let image_handle: Handle<Image> = image_assets.add(image);
 
-    let base_color_texture = Some(image_handle);
+    let base_color_texture: Option<Handle<Image>> = Some(image_handle);
 
     let standard_material = StandardMaterial {
       base_color_texture,
       ..default()
     };
 
-    let debug_material = standard_material_assets.add(standard_material);
+    let debug_material: Handle<StandardMaterial> =
+      standard_material_assets.add(standard_material);
 
     let mesh: Handle<Mesh> = mesh_assets.add(asset);
 
     // https://youtu.be/IHRI01Oqj60?si=8VFt_g1qYgw2vokQ
     for x in -10..10 {
       for z in -10..10 {
-        let debug_material_clone = debug_material.clone();
+        let debug_material_clone: Handle<StandardMaterial> =
+          debug_material.clone();
 
         let material: MeshMaterial3d<StandardMaterial> =
           MeshMaterial3d::from(debug_material_clone);
@@ -222,7 +232,7 @@ impl Launcher {
 
         let transform = Transform::from_translation(translation);
 
-        let pbr_bundle = PbrBundle {
+        let pbr_bundle: MaterialMeshBundle<StandardMaterial> = PbrBundle {
           material,
           mesh,
           transform,
@@ -245,7 +255,7 @@ fn uv_debug_texture() -> Image {
     255, 255,
   ];
 
-  let mut texture_data = [0; TEXTURE_SIZE * TEXTURE_SIZE * 4];
+  let mut texture_data: [u8; 256] = [0; TEXTURE_SIZE * TEXTURE_SIZE * 4];
 
   for y in 0..TEXTURE_SIZE {
     let offset = TEXTURE_SIZE * y * 4;
