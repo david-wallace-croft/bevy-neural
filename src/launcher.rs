@@ -147,25 +147,13 @@ impl Launcher {
 
       let transform = Transform::from_translation(translation);
 
-      // TODO: update deprecated
-      let pbr_bundle: MaterialMeshBundle<StandardMaterial> = PbrBundle {
-        material,
-        mesh,
-        transform,
-        ..Default::default()
-      };
-
-      let component_bundle: (
-        BallEntity,
-        AccelerationComponent,
-        MaterialMeshBundle<StandardMaterial>,
-        PositionComponent,
-        VelocityComponent,
-      ) = (
+      let component_bundle = (
         BallEntity::new(index),
         acceleration_component,
-        pbr_bundle,
+        material,
+        mesh,
         position_component,
+        transform,
         velocity_component,
       );
 
@@ -178,17 +166,14 @@ impl Launcher {
   }
 
   fn spawn_camera(mut commands: Commands) {
+    let camera3d = Camera3d::default();
+
     let target = Vec3::new(0., 1., 0.);
 
     let transform =
       Transform::from_xyz(0., 7., 14.).looking_at(target, Vec3::Y);
 
-    let camera_3d_bundle = Camera3dBundle {
-      transform,
-      ..default()
-    };
-
-    commands.spawn(camera_3d_bundle);
+    commands.spawn((camera3d, transform));
   }
 
   fn spawn_cubes(
@@ -232,14 +217,7 @@ impl Launcher {
 
         let transform = Transform::from_translation(translation);
 
-        let pbr_bundle: MaterialMeshBundle<StandardMaterial> = PbrBundle {
-          material,
-          mesh,
-          transform,
-          ..Default::default()
-        };
-
-        commands.spawn((pbr_bundle, Shape));
+        commands.spawn((Shape, material, mesh, transform));
       }
     }
   }
