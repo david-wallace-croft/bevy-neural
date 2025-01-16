@@ -211,13 +211,15 @@ impl Launcher {
 
         let mesh_clone: Handle<Mesh> = mesh.clone();
 
-        let mesh: Mesh3d = Mesh3d::from(mesh_clone);
+        let mesh3d = Mesh3d::from(mesh_clone);
 
         let translation = Vec3::new((2 * x) as f32, 0., (2 * z) as f32);
 
         let transform = Transform::from_translation(translation);
 
-        commands.spawn((Shape, material, mesh, transform));
+        let bundle = (Shape, material, mesh3d, transform);
+
+        let _entity_commands: EntityCommands<'_>  = commands.spawn(bundle);
       }
     }
   }
@@ -243,16 +245,26 @@ fn uv_debug_texture() -> Image {
     palette.rotate_right(4);
   }
 
+  let size = Extent3d {
+    width: TEXTURE_SIZE as u32,
+    height: TEXTURE_SIZE as u32,
+    depth_or_array_layers: 1,
+  };
+
+  let dimension: TextureDimension = TextureDimension::D2;
+
+  let pixel: &[u8; 256] = &texture_data;
+
+  let format: TextureFormat = TextureFormat::Rgba8UnormSrgb;
+  
+  let asset_usage: RenderAssetUsages = RenderAssetUsages::RENDER_WORLD;
+
   Image::new_fill(
-    Extent3d {
-      width: TEXTURE_SIZE as u32,
-      height: TEXTURE_SIZE as u32,
-      depth_or_array_layers: 1,
-    },
-    TextureDimension::D2,
-    &texture_data,
-    TextureFormat::Rgba8UnormSrgb,
-    RenderAssetUsages::RENDER_WORLD,
+    size,
+    dimension,
+    pixel,
+    format,
+    asset_usage,
   )
 }
 
