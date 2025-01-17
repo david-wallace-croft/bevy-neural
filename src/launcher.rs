@@ -40,7 +40,7 @@ impl Launcher {
       DefaultPlugins.set(image_plugin);
 
     self.app.add_plugins(plugin_group_builder);
-
+    
     self
   }
 
@@ -173,7 +173,11 @@ impl Launcher {
     let transform =
       Transform::from_xyz(0., 7., 14.).looking_at(target, Vec3::Y);
 
-    commands.spawn((camera3d, transform));
+    let entity_commands: EntityCommands = commands.spawn((camera3d, transform));
+
+    let _camera_entity: Entity = entity_commands.id();
+
+    // TODO: https://github.com/PhaestusFox/MindCraft/blob/master/src/player_controller.rs#L109
   }
 
   fn spawn_cubes(
