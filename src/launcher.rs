@@ -1,10 +1,10 @@
 use super::component::acceleration::AccelerationComponent;
+use super::component::fly_camera::FlyCameraComponent;
 use super::component::position::PositionComponent;
 use super::component::velocity::VelocityComponent;
 use super::entity::ball::BallEntity;
 use super::resource::debug_timer::DebugTimer;
 use super::system::ball_updater::update_ball_system;
-// use super::system::camera_mover::camera_mover_system;
 use super::system::debug_printer::debug_printer_system;
 use super::system::position_updater::update_position_system;
 use super::system::velocity_updater::update_velocity_system;
@@ -40,7 +40,9 @@ impl Launcher {
       DefaultPlugins.set(image_plugin);
 
     self.app.add_plugins(plugin_group_builder);
-    
+
+    self.app.add_plugins(FlyCameraComponent);
+
     self
   }
 
@@ -173,13 +175,11 @@ impl Launcher {
     let transform =
       Transform::from_xyz(0., 7., 14.).looking_at(target, Vec3::Y);
 
-    let entity_commands: EntityCommands = commands.spawn((camera3d, transform));
-
-    let _camera_entity: Entity = entity_commands.id();
-
-    // TODO: https://github.com/PhaestusFox/MindCraft/blob/master/src/player_controller.rs#L109
+    let _entity_commands: &mut EntityCommands = commands
+      .spawn((camera3d, transform))
+      .insert(FlyCameraComponent);
   }
-
+  
   fn spawn_cubes(
     mut commands: Commands,
     mut image_assets: ResMut<Assets<Image>>,
@@ -223,7 +223,7 @@ impl Launcher {
 
         let bundle = (Shape, material, mesh3d, transform);
 
-        let _entity_commands: EntityCommands<'_>  = commands.spawn(bundle);
+        let _entity_commands: EntityCommands<'_> = commands.spawn(bundle);
       }
     }
   }
@@ -260,7 +260,7 @@ fn uv_debug_texture() -> Image {
   let pixel: &[u8; 256] = &texture_data;
 
   let format: TextureFormat = TextureFormat::Rgba8UnormSrgb;
-  
+
   let asset_usage: RenderAssetUsages = RenderAssetUsages::RENDER_WORLD;
 
   Image::new_fill(
