@@ -21,7 +21,6 @@ impl Plugin for FlyCameraComponent {
       .add_systems(Update, cursor_toggle_system)
       .add_systems(
         Update,
-        // TODO: Are these in the right order?
         (camera_rotator_system, camera_translator_system).chain(),
       );
   }
