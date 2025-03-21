@@ -179,7 +179,7 @@ impl Launcher {
       .spawn((camera3d, transform))
       .insert(FlyCameraComponent);
   }
-  
+
   fn spawn_cubes(
     mut commands: Commands,
     mut image_assets: ResMut<Assets<Image>>,
@@ -263,13 +263,7 @@ fn uv_debug_texture() -> Image {
 
   let asset_usage: RenderAssetUsages = RenderAssetUsages::RENDER_WORLD;
 
-  Image::new_fill(
-    size,
-    dimension,
-    pixel,
-    format,
-    asset_usage,
-  )
+  Image::new_fill(size, dimension, pixel, format, asset_usage)
 }
 
 #[derive(Component)]
