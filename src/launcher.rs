@@ -8,13 +8,14 @@ use super::system::ball_updater::update_ball_system;
 use super::system::debug_printer::debug_printer_system;
 use super::system::position_updater::update_position_system;
 use super::system::velocity_updater::update_velocity_system;
-use bevy::app::PluginGroupBuilder;
-use bevy::asset::RenderAssetUsages;
-use bevy::ecs::schedule::SystemConfigs;
-use bevy::prelude::*;
-use bevy::render::render_resource::{
+use ::bevy::app::PluginGroupBuilder;
+use ::bevy::asset::RenderAssetUsages;
+use ::bevy::ecs::schedule::ScheduleConfigs;
+use ::bevy::prelude::*;
+use ::bevy::render::render_resource::{
   Extent3d, TextureDimension, TextureFormat,
 };
+use ::std::result::Result;
 
 #[derive(Default)]
 pub struct Launcher {
@@ -34,7 +35,7 @@ impl Launcher {
   // private functions
 
   fn add_plugins(mut self) -> Self {
-    let image_plugin = ImagePlugin::default_nearest();
+    let image_plugin: ImagePlugin = ImagePlugin::default_nearest();
 
     let plugin_group_builder: PluginGroupBuilder =
       DefaultPlugins.set(image_plugin);
@@ -59,7 +60,9 @@ impl Launcher {
   }
 
   fn add_update_systems(mut self) -> Self {
-    let update_systems: SystemConfigs = (
+    let update_systems: ScheduleConfigs<
+      Box<dyn System<In = (), Out = Result<(), BevyError>>>,
+    > = (
       // TODO: camera_mover_system,
       update_velocity_system,
       update_position_system,
@@ -74,11 +77,12 @@ impl Launcher {
   }
 
   fn insert_resources(mut self) -> Self {
-    let clear_color = ClearColor(Color::srgb(0.1, 0., 0.15));
+    let clear_color: ClearColor = ClearColor(Color::srgb(0.1, 0., 0.15));
 
     let _app: &mut App = self.app.insert_resource(clear_color);
 
-    let ambient_light = AmbientLight {
+    let ambient_light: AmbientLight = AmbientLight {
+      affects_lightmapped_meshes: true,
       color: Default::default(),
       brightness: 1_000.,
     };
@@ -111,7 +115,7 @@ impl Launcher {
 
     let base_color_texture: Option<Handle<Image>> = Some(image_handle);
 
-    let standard_material = StandardMaterial {
+    let standard_material: StandardMaterial = StandardMaterial {
       base_color_texture,
       ..default()
     };
@@ -123,14 +127,15 @@ impl Launcher {
     for index in 0..6 {
       // TODO: generate random values
 
-      let acceleration_component = AccelerationComponent::new(1e-2, 1e-2, 1e-2);
+      let acceleration_component: AccelerationComponent =
+        AccelerationComponent::new(1e-2, 1e-2, 1e-2);
 
-      let position_component =
+      let position_component: PositionComponent =
         PositionComponent::new(index as f32, index as f32, index as f32);
 
-      let velocity_component = VelocityComponent::default();
+      let velocity_component: VelocityComponent = VelocityComponent::default();
 
-      let asset = Sphere::default();
+      let asset: Sphere = Sphere::default();
 
       // TODO: Figure out how to get an already created mesh
       let mesh: Handle<Mesh> = mesh_assets.add(asset);
@@ -145,9 +150,10 @@ impl Launcher {
 
       let mesh: Mesh3d = Mesh3d::from(mesh_clone);
 
-      let translation = Vec3::new(index as f32, index as f32, index as f32);
+      let translation: Vec3 =
+        Vec3::new(index as f32, index as f32, index as f32);
 
-      let transform = Transform::from_translation(translation);
+      let transform: Transform = Transform::from_translation(translation);
 
       let component_bundle = (
         BallEntity::new(index),
@@ -168,11 +174,11 @@ impl Launcher {
   }
 
   fn spawn_camera(mut commands: Commands) {
-    let camera3d = Camera3d::default();
+    let camera3d: Camera3d = Camera3d::default();
 
-    let target = Vec3::new(0., 1., 0.);
+    let target: Vec3 = Vec3::new(0., 1., 0.);
 
-    let transform =
+    let transform: Transform =
       Transform::from_xyz(0., 7., 14.).looking_at(target, Vec3::Y);
 
     let _entity_commands: &mut EntityCommands = commands
@@ -186,7 +192,7 @@ impl Launcher {
     mut mesh_assets: ResMut<Assets<Mesh>>,
     mut standard_material_assets: ResMut<Assets<StandardMaterial>>,
   ) {
-    let asset = Cuboid::new(1., 1., 1.);
+    let asset: Cuboid = Cuboid::new(1., 1., 1.);
 
     let image: Image = uv_debug_texture();
 
@@ -194,7 +200,7 @@ impl Launcher {
 
     let base_color_texture: Option<Handle<Image>> = Some(image_handle);
 
-    let standard_material = StandardMaterial {
+    let standard_material: StandardMaterial = StandardMaterial {
       base_color_texture,
       ..default()
     };
@@ -215,11 +221,11 @@ impl Launcher {
 
         let mesh_clone: Handle<Mesh> = mesh.clone();
 
-        let mesh3d = Mesh3d::from(mesh_clone);
+        let mesh3d: Mesh3d = Mesh3d::from(mesh_clone);
 
-        let translation = Vec3::new((2 * x) as f32, 0., (2 * z) as f32);
+        let translation: Vec3 = Vec3::new((2 * x) as f32, 0., (2 * z) as f32);
 
-        let transform = Transform::from_translation(translation);
+        let transform: Transform = Transform::from_translation(translation);
 
         let bundle = (Shape, material, mesh3d, transform);
 
@@ -249,7 +255,7 @@ fn uv_debug_texture() -> Image {
     palette.rotate_right(4);
   }
 
-  let size = Extent3d {
+  let size: Extent3d = Extent3d {
     width: TEXTURE_SIZE as u32,
     height: TEXTURE_SIZE as u32,
     depth_or_array_layers: 1,
