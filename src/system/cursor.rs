@@ -6,7 +6,7 @@ use ::bevy::window::PrimaryWindow;
 // https://www.youtube.com/watch?v=dD5-M-vUmls
 
 pub fn cursor_grab_system(mut query: Query<&mut Window, With<PrimaryWindow>>) {
-  let Ok(mut window) = query.get_single_mut() else {
+  let Ok(mut window) = query.single_mut() else {
     return;
   };
 
@@ -18,7 +18,7 @@ pub fn cursor_grab_system(mut query: Query<&mut Window, With<PrimaryWindow>>) {
 pub fn cursor_release_system(
   mut query: Query<&mut Window, With<PrimaryWindow>>
 ) {
-  let Ok(mut window) = query.get_single_mut() else {
+  let Ok(mut window) = query.single_mut() else {
     return;
   };
 
@@ -32,11 +32,11 @@ pub fn cursor_toggle_system(
   camera_settings_query: Query<&CameraSettingsComponent>,
   mut window_query: Query<&mut Window, With<PrimaryWindow>>,
 ) {
-  let Ok(window) = window_query.get_single_mut() else {
+  let Ok(window) = window_query.single_mut() else {
     return;
   };
 
-  let Ok(camera_settings) = camera_settings_query.get_single() else {
+  let Ok(camera_settings) = camera_settings_query.single() else {
     return;
   };
 

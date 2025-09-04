@@ -17,7 +17,7 @@ pub fn camera_rotator_system(
 ) {
   let delta: Vec2 = event_reader.read().map(|v: &MouseMotion| v.delta).sum();
 
-  let Ok(window) = window_query.get_single() else {
+  let Ok(window) = window_query.single() else {
     return;
   };
 
