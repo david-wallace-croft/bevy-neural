@@ -52,7 +52,7 @@ pub fn camera_translator_system(
   time: Res<Time>,
 ) {
   for (camera_settings, mut transform) in &mut query {
-    let mut delta = Vec3::ZERO;
+    let mut delta: Vec3 = Vec3::ZERO;
 
     if button_input.pressed(camera_settings.forward) {
       delta.z += 1.;

@@ -89,9 +89,9 @@ impl Launcher {
 
     let _app: &mut App = self.app.insert_resource(ambient_light);
 
-    let timer = Timer::from_seconds(1., TimerMode::Repeating);
+    let timer: Timer = Timer::from_seconds(1., TimerMode::Repeating);
 
-    let debug_timer = DebugTimer(timer);
+    let debug_timer: DebugTimer = DebugTimer(timer);
 
     let _app: &mut App = self.app.insert_resource(debug_timer);
 
